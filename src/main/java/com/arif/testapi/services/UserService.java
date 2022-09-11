@@ -1,7 +1,6 @@
 package com.arif.testapi.services;
 
 import com.arif.testapi.payloads.UserDTO;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,9 +12,10 @@ public interface UserService {
 
     UserDTO updateUser(UserDTO user, Integer userId);
 
+    void deleteUsers(Integer userId);
+
     UserDTO getUserById(Integer userId);
 
     List<UserDTO> getAllUsers();
 
-    void deleteUsers(Integer userId);
 }
