@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class PostServiceImpl implements PostService {
@@ -68,7 +69,10 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<PostDto> getAllPost() {
-        return null;
+
+        List<PostDto> allPost = this.userPostRepo.findAll().stream().map((post -> this.modelMapper.map(post, PostDto.class))).collect(Collectors.toList());
+
+        return allPost;
     }
 
     @Override

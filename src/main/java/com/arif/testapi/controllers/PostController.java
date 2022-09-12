@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Repository
 @RequestMapping("/api")
 public class PostController {
@@ -44,5 +46,11 @@ public class PostController {
         return new ResponseEntity<>(new ApiResponse("Post Deleted Successfully", true), HttpStatus.OK);
     }
 
+    @GetMapping("post/allPost")
+    public ResponseEntity<List<PostDto>> getAllPost() {
+        List<PostDto> allPost = this.postService.getAllPost();
+
+        return new ResponseEntity<>(allPost, HttpStatus.OK);
+    }
 
 }
