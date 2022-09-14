@@ -47,10 +47,33 @@ public class PostController {
     }
 
     @GetMapping("post/allPost")
-    public ResponseEntity<List<PostDto>> getAllPost() {
-        List<PostDto> allPost = this.postService.getAllPost();
+    public ResponseEntity<List<PostDto>> getAllPost(@RequestParam(value = "pageNumber", defaultValue = "1", required = false) int pageNumber,
+                                                    @RequestParam(value = "pageSize", defaultValue = "5", required = false) int pageSize)
+    {
+        List<PostDto> allPost = this.postService.getAllPost(pageNumber, pageSize);
 
         return new ResponseEntity<>(allPost, HttpStatus.OK);
+    }
+
+    @GetMapping("post/postId/{postId}")
+    public ResponseEntity<List<PostDto>> getPostByPostId(@PathVariable int postId) {
+        List<PostDto> postById = this.postService.getPostByPostId(postId);
+
+        return new ResponseEntity<>(postById, HttpStatus.OK);
+    }
+
+    @GetMapping("post/userId/{userId}")
+    public ResponseEntity<List<PostDto>> getPostByUser(@PathVariable int userId) {
+        List<PostDto> postById = this.postService.getPostByUser(userId);
+
+        return new ResponseEntity<>(postById, HttpStatus.OK);
+    }
+
+    @GetMapping("post/categoryId/{categoryId}")
+    public ResponseEntity<List<PostDto>> getPostByCategory(@PathVariable int categoryId) {
+        List<PostDto> category = this.postService.getPostByCategory(categoryId);
+
+        return new ResponseEntity<>(category, HttpStatus.OK);
     }
 
 }
