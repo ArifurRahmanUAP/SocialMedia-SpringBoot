@@ -2,6 +2,7 @@ package com.arif.testapi.controllers;
 
 import com.arif.testapi.payloads.ApiResponse;
 import com.arif.testapi.payloads.PostDto;
+import com.arif.testapi.payloads.PostResponse;
 import com.arif.testapi.repositories.UserPostRepo;
 import com.arif.testapi.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,10 +48,11 @@ public class PostController {
     }
 
     @GetMapping("post/allPost")
-    public ResponseEntity<List<PostDto>> getAllPost(@RequestParam(value = "pageNumber", defaultValue = "1", required = false) int pageNumber,
-                                                    @RequestParam(value = "pageSize", defaultValue = "5", required = false) int pageSize)
-    {
-        List<PostDto> allPost = this.postService.getAllPost(pageNumber, pageSize);
+    public ResponseEntity<PostResponse> getAllPost(@RequestParam(value = "pageNumber", defaultValue = "0", required = false) int pageNumber,
+                                                   @RequestParam(value = "pageSize", defaultValue = "5", required = false) int pageSize,
+                                                   @RequestParam(value = "sortBy", defaultValue = "postId", required = false) String sortBy,
+                                                   @RequestParam(value = "sortDir", defaultValue = "asc", required = false) String sortDir) {
+        PostResponse allPost = this.postService.getAllPost(pageNumber, pageSize, sortBy, sortDir);
 
         return new ResponseEntity<>(allPost, HttpStatus.OK);
     }
@@ -74,6 +76,12 @@ public class PostController {
         List<PostDto> category = this.postService.getPostByCategory(categoryId);
 
         return new ResponseEntity<>(category, HttpStatus.OK);
+    }
+    @GetMapping("post/search/{keywords}")
+    public ResponseEntity<List<PostDto>> searchPost(@PathVariable String keywords){
+        List<PostDto> searchData = this.postService.searchPost(keywords);
+
+        return  new ResponseEntity<>(searchData, HttpStatus.OK);
     }
 
 }

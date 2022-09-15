@@ -2,6 +2,7 @@ package com.arif.testapi.services;
 
 import com.arif.testapi.entities.Post;
 import com.arif.testapi.payloads.PostDto;
+import com.arif.testapi.payloads.PostResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public interface PostService {
     void deletePost(int postId);
 
 
-    List<PostDto> getAllPost(int pageNumber, int pageSize);
+    PostResponse getAllPost(int pageNumber, int pageSize, String sortBy, String sortDir);
 
     List<PostDto> getPostByPostId(int postId);
 

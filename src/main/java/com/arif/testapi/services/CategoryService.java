@@ -1,6 +1,7 @@
 package com.arif.testapi.services;
 
 import com.arif.testapi.payloads.CategoryDto;
+import com.arif.testapi.payloads.CategoryResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,5 +17,5 @@ public interface CategoryService {
 
     CategoryDto getCategoryById(int categoryId);
 
-    List<CategoryDto> getCategories();
+    CategoryResponse getCategories(int pageNumber, int pageSize);
 }

@@ -3,9 +3,13 @@ package com.arif.testapi.services.implamantation;
 import com.arif.testapi.entities.Category;
 import com.arif.testapi.exceptions.ResourceNotFoundException;
 import com.arif.testapi.payloads.CategoryDto;
+import com.arif.testapi.payloads.CategoryResponse;
+import com.arif.testapi.payloads.PostDto;
 import com.arif.testapi.repositories.CategoryRepo;
 import com.arif.testapi.services.CategoryService;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -55,11 +59,17 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<CategoryDto> getCategories() {
+    public CategoryResponse getCategories(int pageNumber, int pageSize) {
 
-        List<Category> all = this.categoryRepo.findAll();
+        Pageable p = PageRequest.of(pageNumber, pageSize);
+        CategoryResponse categoryResponse = new CategoryResponse();
+        List<CategoryDto> Categories = this.categoryRepo.findAll(p).stream().map(category -> this.modelMapper.map(category, CategoryDto.class)).collect(Collectors.toList());
 
-        return all.stream().map(this::categoryToDto).collect(Collectors.toList());
+        categoryResponse.setCategory(Categories);
+        categoryResponse.setPageNumber(p.getPageNumber());
+        categoryResponse.setPageSize(p.getPageSize());
+//        categoryResponse.setTotalPages(p.);
+        return categoryResponse;
     }
 
 

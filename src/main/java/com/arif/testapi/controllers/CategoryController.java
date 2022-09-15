@@ -2,6 +2,7 @@ package com.arif.testapi.controllers;
 
 import com.arif.testapi.payloads.ApiResponse;
 import com.arif.testapi.payloads.CategoryDto;
+import com.arif.testapi.payloads.CategoryResponse;
 import com.arif.testapi.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,6 @@ public class CategoryController {
         CategoryDto category = this.categoryService.createCategory(categoryDto);
 
         return new ResponseEntity<>(category, HttpStatus.CREATED);
-
     }
 
     @PutMapping("/{categoryId}")
@@ -53,8 +53,9 @@ public class CategoryController {
     }
 
     @GetMapping("/")
-    ResponseEntity<List<CategoryDto>> getAllCategories() {
-        List<CategoryDto> categories = this.categoryService.getCategories();
+    ResponseEntity<CategoryResponse> getAllCategories(@RequestParam(value = "pageNumber", defaultValue = "0", required = false) int pageNumber,
+                                                      @RequestParam(value = "pageSize", defaultValue = "5", required = false) int pageSize) {
+        CategoryResponse categories = this.categoryService.getCategories(pageNumber, pageSize);
         return ResponseEntity.ok(categories);
     }
 }
