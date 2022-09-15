@@ -23,7 +23,7 @@ public class PostController {
     @Autowired
     private UserPostRepo userPostRepo;
 
-    @PostMapping("/user/{userId}/category/{categoryId}/posts")
+    @PostMapping("/user/{userId}/category/{categoryId}/post")
     public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto, @PathVariable int userId, @PathVariable int categoryId) {
 
         PostDto createPost = this.postService.createPost(postDto, userId, categoryId);
