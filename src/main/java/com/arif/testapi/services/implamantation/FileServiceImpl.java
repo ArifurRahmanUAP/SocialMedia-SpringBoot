@@ -23,8 +23,8 @@ public class FileServiceImpl implements FileService {
         String name = file.getOriginalFilename();
 
         //Full Path
-//        String randomId = UUID.randomUUID().toString();
-        String filePath = path + name;
+        String randomId = UUID.randomUUID().toString();
+        String filePath = path +randomId+ name;
 
 
         //Create Folder
@@ -39,7 +39,7 @@ public class FileServiceImpl implements FileService {
         Files.copy(file.getInputStream(), Paths.get(filePath));
 
 
-        return name;
+        return randomId+name;
     }
 
     @Override

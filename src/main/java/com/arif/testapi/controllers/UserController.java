@@ -42,15 +42,19 @@ public class UserController {
 
 
     @PostMapping("/")
-    public ResponseEntity<UserDTO> createUser(@RequestParam(value = "image", required = false) MultipartFile image) throws IOException {
+    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO,  @RequestParam(value = "image", required = false) MultipartFile images ) {
 
-        UserDTO userDTO = new UserDTO();
 //        String fileName = StringUtils.cleanPath(Objects.requireNonNull(image.getOriginalFilename()));
 
-        String fileName = this.fileService.uploadImage(path, image);
+        String fileName = null;
+        try {
+            fileName = this.fileService.uploadImage(path, images);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
-        userDTO.setUserImage(fileName);
+        userDTO.setUserImage("http://localhost:3309/api/users/images/" + fileName);
 
         UserDTO createUserDto = this.userService.createUser(userDTO);
 
