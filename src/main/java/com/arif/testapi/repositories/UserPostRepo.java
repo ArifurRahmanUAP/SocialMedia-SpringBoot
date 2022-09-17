@@ -15,7 +15,7 @@ public interface UserPostRepo extends JpaRepository<Post, Integer> {
 
     List<Post> findByCategory (Category category);
 
-    List<Post> findByPostTitleContaining(String title);
+    List<Post> findByPostTitleContaining(String keyword);
 
 
 }

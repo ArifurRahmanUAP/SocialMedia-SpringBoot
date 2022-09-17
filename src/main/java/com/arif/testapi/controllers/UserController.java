@@ -2,29 +2,69 @@ package com.arif.testapi.controllers;
 
 import com.arif.testapi.payloads.ApiResponse;
 import com.arif.testapi.payloads.UserDTO;
+import com.arif.testapi.services.FileService;
 import com.arif.testapi.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.validation.Valid;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
 
+    @Autowired
+    private UserService userService;
 
-    private final UserService userService;
+    @Autowired
+    private FileService fileService;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    @Value("${project.image}")
+    private String path;
 
 
     @PostMapping("/")
-    public ResponseEntity<UserDTO> createUser(@RequestBody @Valid UserDTO userDTO) {
+    public ResponseEntity<UserDTO> createUser(@RequestBody @Valid UserDTO userDTO, @RequestParam("image") MultipartFile image) throws IOException {
+
+
+        String fileName = StringUtils.cleanPath(Objects.requireNonNull(image.getOriginalFilename()));
+
+        userDTO.setUserImage(fileName);
 
         UserDTO createUserDto = this.userService.createUser(userDTO);
+
+        String uploadDir = path + createUserDto.getId();
+        Path paths = Paths.get(uploadDir);
+        if (!Files.exists(paths)){
+            Files.createDirectories(paths);
+        }
+
+        try {
+            InputStream inputStream = image.getInputStream();
+            Path filepath = paths.resolve(fileName);
+            Files.copy(inputStream, filepath, StandardCopyOption.REPLACE_EXISTING);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+
         return new ResponseEntity<>(createUserDto, HttpStatus.CREATED);
     }
 

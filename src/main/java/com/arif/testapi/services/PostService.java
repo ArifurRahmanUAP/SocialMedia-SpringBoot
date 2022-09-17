@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 public interface PostService {
 
     PostDto createPost(PostDto postDto, int userId, int categoryId);

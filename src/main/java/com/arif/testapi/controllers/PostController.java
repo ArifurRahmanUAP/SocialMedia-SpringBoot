@@ -1,5 +1,6 @@
 package com.arif.testapi.controllers;
 
+import com.arif.testapi.Config.Constants;
 import com.arif.testapi.payloads.ApiResponse;
 import com.arif.testapi.payloads.PostDto;
 import com.arif.testapi.payloads.PostResponse;
@@ -36,7 +37,7 @@ public class PostController {
 
         PostDto post = this.postService.updatePost(postDto, postId);
         PostDto updatePost = this.postService.updatePost(post, postId);
-        return new ResponseEntity<PostDto>(updatePost, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(updatePost, HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/post/{postId}")
@@ -44,14 +45,14 @@ public class PostController {
 
         this.postService.deletePost(postId);
 
-        return new ResponseEntity<>(new ApiResponse("Post Deleted Successfully", true), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponse(Constants.POST_DELETED, true), HttpStatus.OK);
     }
 
     @GetMapping("post/allPost")
-    public ResponseEntity<PostResponse> getAllPost(@RequestParam(value = "pageNumber", defaultValue = "0", required = false) int pageNumber,
-                                                   @RequestParam(value = "pageSize", defaultValue = "5", required = false) int pageSize,
-                                                   @RequestParam(value = "sortBy", defaultValue = "postId", required = false) String sortBy,
-                                                   @RequestParam(value = "sortDir", defaultValue = "asc", required = false) String sortDir) {
+    public ResponseEntity<PostResponse> getAllPost(@RequestParam(value = "pageNumber", defaultValue = Constants.PAGE_NUMBER, required = false) int pageNumber,
+                                                   @RequestParam(value = "pageSize", defaultValue = Constants.PAGE_SIZE, required = false) int pageSize,
+                                                   @RequestParam(value = "sortBy", defaultValue = Constants.SORT_BY, required = false) String sortBy,
+                                                   @RequestParam(value = "sortDir", defaultValue = Constants.SORT_DIR, required = false) String sortDir) {
         PostResponse allPost = this.postService.getAllPost(pageNumber, pageSize, sortBy, sortDir);
 
         return new ResponseEntity<>(allPost, HttpStatus.OK);

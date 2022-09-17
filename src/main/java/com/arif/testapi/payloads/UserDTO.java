@@ -3,6 +3,7 @@ package com.arif.testapi.payloads;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.context.annotation.Profile;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -22,6 +23,8 @@ public class UserDTO {
     @Email(message = "Email address is not valid")
     @NotEmpty
     private String email;
+
+    private String userImage;
 
     @NotEmpty
     @Size(min = 6, max = 12, message = "Password length must be min 6 and max 12 char")
