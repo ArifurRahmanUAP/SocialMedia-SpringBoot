@@ -6,10 +6,7 @@ import com.arif.testapi.services.FileService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.UUID;
@@ -25,10 +22,9 @@ public class FileServiceImpl implements FileService {
         // File Name
         String name = file.getOriginalFilename();
 
-        //File Path
-        String randomId = UUID.randomUUID().toString();
-        String filePath = path + File.separator + randomId + name;
-
+        //Full Path
+//        String randomId = UUID.randomUUID().toString();
+        String filePath = path + name;
 
 
         //Create Folder
@@ -43,11 +39,16 @@ public class FileServiceImpl implements FileService {
         Files.copy(file.getInputStream(), Paths.get(filePath));
 
 
-        return filePath;
+        return name;
     }
 
     @Override
     public InputStream getResource(String path, String fileName) throws FileNotFoundException {
-        return null;
+
+        String fullPath = path + File.separator + fileName;
+
+        InputStream is = new FileInputStream(fullPath);
+
+        return is;
     }
 }

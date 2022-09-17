@@ -7,11 +7,14 @@ import com.arif.testapi.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StreamUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
@@ -39,33 +42,42 @@ public class UserController {
 
 
     @PostMapping("/")
-    public ResponseEntity<UserDTO> createUser(@RequestBody @Valid UserDTO userDTO, @RequestParam("image") MultipartFile image) throws IOException {
+    public ResponseEntity<UserDTO> createUser(@RequestParam(value = "image", required = false) MultipartFile image) throws IOException {
 
+        UserDTO userDTO = new UserDTO();
+//        String fileName = StringUtils.cleanPath(Objects.requireNonNull(image.getOriginalFilename()));
 
-        String fileName = StringUtils.cleanPath(Objects.requireNonNull(image.getOriginalFilename()));
+        String fileName = this.fileService.uploadImage(path, image);
+
 
         userDTO.setUserImage(fileName);
 
         UserDTO createUserDto = this.userService.createUser(userDTO);
 
-        String uploadDir = path + createUserDto.getId();
-        Path paths = Paths.get(uploadDir);
-        if (!Files.exists(paths)){
-            Files.createDirectories(paths);
-        }
-
-        try {
-            InputStream inputStream = image.getInputStream();
-            Path filepath = paths.resolve(fileName);
-            Files.copy(inputStream, filepath, StandardCopyOption.REPLACE_EXISTING);
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-
-
+//
+//        String uploadDir = path + createUserDto.getId();
+//        Path paths = Paths.get(uploadDir);
+//        if (!Files.exists(paths)) {
+//            Files.createDirectories(paths);
+//        }
+//
+//        try {
+//            InputStream inputStream = image.getInputStream();
+//            Path filepath = paths.resolve(fileName);
+//            Files.copy(inputStream, filepath, StandardCopyOption.REPLACE_EXISTING);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
         return new ResponseEntity<>(createUserDto, HttpStatus.CREATED);
+    }
+
+    @GetMapping(value = "images/{imageName}", produces = MediaType.IMAGE_JPEG_VALUE)
+    public void downloadImage(@PathVariable("imageName") String imageName, HttpServletResponse response) throws IOException {
+
+        InputStream inputStream = this.fileService.getResource(path, imageName);
+        response.setContentType(MediaType.IMAGE_JPEG_VALUE);
+        StreamUtils.copy(inputStream, response.getOutputStream());
     }
 
     @PutMapping("/{id}")
