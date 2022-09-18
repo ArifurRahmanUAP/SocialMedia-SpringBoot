@@ -8,6 +8,7 @@ import com.arif.testapi.payloads.PostDto;
 import com.arif.testapi.repositories.CategoryRepo;
 import com.arif.testapi.services.CategoryService;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
@@ -19,14 +20,11 @@ import java.util.stream.Collectors;
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
-    private final CategoryRepo categoryRepo;
+    @Autowired
+    private CategoryRepo categoryRepo;
 
-    private final ModelMapper modelMapper;
-
-    public CategoryServiceImpl(CategoryRepo categoryRepo, ModelMapper modelMapper) {
-        this.categoryRepo = categoryRepo;
-        this.modelMapper = modelMapper;
-    }
+    @Autowired
+    private ModelMapper modelMapper;
 
 
     @Override

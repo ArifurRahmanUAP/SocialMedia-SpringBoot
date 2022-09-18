@@ -58,7 +58,6 @@ public class UserController {
 
         UserDTO createUserDto = this.userService.createUser(userDTO);
 
-//
 //        String uploadDir = path + createUserDto.getId();
 //        Path paths = Paths.get(uploadDir);
 //        if (!Files.exists(paths)) {

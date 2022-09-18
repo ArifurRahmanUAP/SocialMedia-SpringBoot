@@ -1,5 +1,6 @@
 package com.arif.testapi.payloads;
 
+import com.arif.testapi.entities.Comment;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
