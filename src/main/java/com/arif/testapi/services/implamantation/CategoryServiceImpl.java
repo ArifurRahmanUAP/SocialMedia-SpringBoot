@@ -9,8 +9,10 @@ import com.arif.testapi.repositories.CategoryRepo;
 import com.arif.testapi.services.CategoryService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -58,16 +60,22 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryResponse getCategories(int pageNumber, int pageSize) {
+    public CategoryResponse getCategories(int pageNumber, int pageSize, String sortBy, String sortDir) {
 
-        Pageable p = PageRequest.of(pageNumber, pageSize);
+        Sort sort = sortDir.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+
+        Pageable p = PageRequest.of(pageNumber, pageSize, sort);
+        Page<Category> category = this.categoryRepo.findAll(p);
+
         CategoryResponse categoryResponse = new CategoryResponse();
-        List<CategoryDto> Categories = this.categoryRepo.findAll(p).stream().map(category -> this.modelMapper.map(category, CategoryDto.class)).collect(Collectors.toList());
+        List<CategoryDto> categories = category.stream().map(cat -> this.modelMapper.map(cat, CategoryDto.class)).collect(Collectors.toList());
 
-        categoryResponse.setCategory(Categories);
-        categoryResponse.setPageNumber(p.getPageNumber());
-        categoryResponse.setPageSize(p.getPageSize());
-//        categoryResponse.setTotalPages(p.);
+        categoryResponse.setCategory(categories);
+        categoryResponse.setPageNumber(category.getNumber());
+        categoryResponse.setPageSize(category.getSize());
+        categoryResponse.setTotalPages(category.getTotalPages());
+        categoryResponse.setTotalElements(category.getTotalElements());
+        categoryResponse.setLastPage(category.isLast());
         return categoryResponse;
     }
 

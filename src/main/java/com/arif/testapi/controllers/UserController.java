@@ -46,6 +46,8 @@ public class UserController {
 
 //        String fileName = StringUtils.cleanPath(Objects.requireNonNull(image.getOriginalFilename()));
 
+//        UserDTO userDTO = new UserDTO();
+
         String fileName = null;
         try {
             fileName = this.fileService.uploadImage(path, images);

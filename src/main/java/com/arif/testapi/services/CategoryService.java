@@ -15,5 +15,5 @@ public interface CategoryService {
 
     CategoryDto getCategoryById(int categoryId);
 
-    CategoryResponse getCategories(int pageNumber, int pageSize);
+    CategoryResponse getCategories(int pageNumber, int pageSize, String sortBy, String sortDir);
 }

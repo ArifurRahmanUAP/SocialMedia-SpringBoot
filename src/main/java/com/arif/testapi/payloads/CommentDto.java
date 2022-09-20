@@ -24,6 +24,6 @@ public class CommentDto {
 
     @ManyToOne
     @JoinColumn(name = "post_id")
-    private UserDTO user;
+    private UserResponseForComment user;
 
 }
