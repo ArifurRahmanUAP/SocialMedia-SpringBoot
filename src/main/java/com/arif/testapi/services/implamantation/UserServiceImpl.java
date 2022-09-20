@@ -2,11 +2,22 @@ package com.arif.testapi.services.implamantation;
 
 import com.arif.testapi.entities.User;
 import com.arif.testapi.exceptions.ResourceNotFoundException;
+import com.arif.testapi.payloads.PostDto;
+import com.arif.testapi.payloads.Response.AllUserResponse;
+import com.arif.testapi.payloads.Response.CategoryResponse;
+import com.arif.testapi.payloads.Response.UserResponse;
 import com.arif.testapi.payloads.UserDTO;
+import com.arif.testapi.repositories.UserPostRepo;
 import com.arif.testapi.repositories.UserRepo;
 import com.arif.testapi.services.UserService;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,14 +26,12 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
 
-    private final UserRepo userRepo;
+    @Autowired
+    private UserRepo userRepo;
 
-    private final ModelMapper modelMapper;
+    @Autowired
+    private ModelMapper modelMapper;
 
-    public UserServiceImpl(UserRepo userRepo, ModelMapper modelMapper) {
-        this.userRepo = userRepo;
-        this.modelMapper = modelMapper;
-    }
 
 
     @Override
@@ -66,11 +75,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDTO> getAllUsers() {
+    public AllUserResponse getAllUsers(int pageNumber, int pageSize, String sortBy, String sortDir) {
 
-        List<User> allUsers = this.userRepo.findAll();
-        List<UserDTO> userDTOS = allUsers.stream().map(user -> this.modelMapper.map(user, UserDTO.class)).collect(Collectors.toList());
-        return userDTOS;
+        Sort sort = (sortDir.equalsIgnoreCase("asc")? Sort.by(sortBy).ascending(): Sort.by(sortBy).descending());
+        Pageable p = PageRequest.of(pageNumber, pageSize, sort);
+
+        Page<User> allUsers = this.userRepo.findAll(p);
+
+        List<UserResponse> postDto = allUsers.stream().map((user -> this.modelMapper.map(user, UserResponse.class))).collect(Collectors.toList());
+
+        AllUserResponse allUserResponses = new AllUserResponse();
+
+        allUserResponses.setTotalPages(allUsers.getTotalPages());
+        allUserResponses.setPageNumber(allUsers.getNumber());
+        allUserResponses.setPageSize(allUsers.getSize());
+        allUserResponses.setLastPage(allUsers.isLast());
+        allUserResponses.setTotalElements(allUsers.getTotalElements());
+
+        allUserResponses.setUsers(postDto);
+
+        return allUserResponses;
     }
 
 

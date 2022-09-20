@@ -1,6 +1,9 @@
 package com.arif.testapi.controllers;
 
-import com.arif.testapi.payloads.ApiResponse;
+import com.arif.testapi.payloads.Response.AllUserResponse;
+import com.arif.testapi.payloads.Response.PostResponse;
+import com.arif.testapi.payloads.Response.UserResponse;
+import com.arif.testapi.payloads.Response.ApiResponse;
 import com.arif.testapi.payloads.UserDTO;
 import com.arif.testapi.services.FileService;
 import com.arif.testapi.services.UserService;
@@ -10,22 +13,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StreamUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/users")
@@ -110,9 +105,14 @@ public class UserController {
     }
 
     @GetMapping("/getAllUsers")
-    public ResponseEntity<List<UserDTO>> getAllUsers() {
+    public ResponseEntity<AllUserResponse> getAllUsers(@RequestParam(value = "pageNumber", defaultValue = "0", required = false) int pageNumber,
+                                                          @RequestParam(value = "pageSize", defaultValue = "5", required = false) int pageSize,
+                                                          @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy,
+                                                          @RequestParam(value = "sortDir", defaultValue = "asc", required = false) String sortDir) {
 
-        return ResponseEntity.ok(this.userService.getAllUsers());
+        AllUserResponse allUsers = this.userService.getAllUsers(pageNumber, pageSize, sortBy, sortDir);
+
+        return ResponseEntity.ok(allUsers);
 
     }
 

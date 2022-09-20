@@ -1,7 +1,8 @@
 package com.arif.testapi.services;
 
+import com.arif.testapi.payloads.Response.AllUserResponse;
+import com.arif.testapi.payloads.Response.UserResponse;
 import com.arif.testapi.payloads.UserDTO;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -15,6 +16,6 @@ public interface UserService {
 
     UserDTO getUserById(Integer userId);
 
-    List<UserDTO> getAllUsers();
+    AllUserResponse getAllUsers(int pageNumber, int pageSize, String sortBy, String sortDir);
 
 }

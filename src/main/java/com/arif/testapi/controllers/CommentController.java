@@ -1,6 +1,6 @@
 package com.arif.testapi.controllers;
 
-import com.arif.testapi.payloads.ApiResponse;
+import com.arif.testapi.payloads.Response.ApiResponse;
 import com.arif.testapi.payloads.CommentDto;
 import com.arif.testapi.services.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;

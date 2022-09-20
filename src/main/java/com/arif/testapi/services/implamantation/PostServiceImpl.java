@@ -4,9 +4,8 @@ import com.arif.testapi.entities.Category;
 import com.arif.testapi.entities.User;
 import com.arif.testapi.entities.Post;
 import com.arif.testapi.exceptions.ResourceNotFoundException;
-import com.arif.testapi.payloads.CategoryDto;
 import com.arif.testapi.payloads.PostDto;
-import com.arif.testapi.payloads.PostResponse;
+import com.arif.testapi.payloads.Response.PostResponse;
 import com.arif.testapi.repositories.CategoryRepo;
 import com.arif.testapi.repositories.UserPostRepo;
 import com.arif.testapi.repositories.UserRepo;
@@ -17,13 +16,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -85,6 +81,7 @@ public class PostServiceImpl implements PostService {
         Page<Post> page = this.userPostRepo.findAll(p);
 
         List<PostDto> postDto = page.stream().map((post -> this.modelMapper.map(post, PostDto.class))).collect(Collectors.toList());
+
         PostResponse postResponse = new PostResponse();
         postResponse.setContent(postDto);
         postResponse.setPageNumber(page.getNumber());

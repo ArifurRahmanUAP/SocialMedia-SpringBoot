@@ -1,6 +1,7 @@
-package com.arif.testapi.payloads;
+package com.arif.testapi.payloads.Response;
 
 import com.arif.testapi.entities.Comment;
+import com.arif.testapi.payloads.PostDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

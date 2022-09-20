@@ -1,9 +1,7 @@
 package com.arif.testapi.services;
 
-import com.arif.testapi.entities.Post;
 import com.arif.testapi.payloads.PostDto;
-import com.arif.testapi.payloads.PostResponse;
-import org.springframework.stereotype.Service;
+import com.arif.testapi.payloads.Response.PostResponse;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.arif.testapi.payloads;
+package com.arif.testapi.payloads.Response;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +19,5 @@ public class UserResponseForComment {
     private String name;
 
     private String userImage;
-
-
 
 }

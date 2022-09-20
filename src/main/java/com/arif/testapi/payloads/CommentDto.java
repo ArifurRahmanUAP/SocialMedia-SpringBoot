@@ -1,6 +1,6 @@
 package com.arif.testapi.payloads;
 
-import com.arif.testapi.entities.User;
+import com.arif.testapi.payloads.Response.UserResponseForComment;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

@@ -1,8 +1,8 @@
 package com.arif.testapi.controllers;
 
-import com.arif.testapi.payloads.ApiResponse;
+import com.arif.testapi.payloads.Response.ApiResponse;
 import com.arif.testapi.payloads.CategoryDto;
-import com.arif.testapi.payloads.CategoryResponse;
+import com.arif.testapi.payloads.Response.CategoryResponse;
 import com.arif.testapi.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/categories")

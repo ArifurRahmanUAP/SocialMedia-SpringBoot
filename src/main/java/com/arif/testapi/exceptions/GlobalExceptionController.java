@@ -1,6 +1,6 @@
 package com.arif.testapi.exceptions;
 
-import com.arif.testapi.payloads.ApiResponse;
+import com.arif.testapi.payloads.Response.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;

@@ -1,9 +1,9 @@
 package com.arif.testapi.controllers;
 
 import com.arif.testapi.Config.Constants;
-import com.arif.testapi.payloads.ApiResponse;
+import com.arif.testapi.payloads.Response.ApiResponse;
 import com.arif.testapi.payloads.PostDto;
-import com.arif.testapi.payloads.PostResponse;
+import com.arif.testapi.payloads.Response.PostResponse;
 import com.arif.testapi.repositories.UserPostRepo;
 import com.arif.testapi.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;

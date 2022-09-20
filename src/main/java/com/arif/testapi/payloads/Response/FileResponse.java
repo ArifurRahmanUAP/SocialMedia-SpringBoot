@@ -1,4 +1,4 @@
-package com.arif.testapi.payloads;
+package com.arif.testapi.payloads.Response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

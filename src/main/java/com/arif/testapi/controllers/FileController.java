@@ -1,6 +1,6 @@
 package com.arif.testapi.controllers;
 
-import com.arif.testapi.payloads.FileResponse;
+import com.arif.testapi.payloads.Response.FileResponse;
 import com.arif.testapi.services.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
