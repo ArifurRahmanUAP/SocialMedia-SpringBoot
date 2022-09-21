@@ -25,7 +25,9 @@ public class PostController {
     private UserPostRepo userPostRepo;
 
     @PostMapping("/user/{userId}/category/{categoryId}/post")
-    public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto, @PathVariable int userId, @PathVariable int categoryId) {
+    public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto,
+                                              @PathVariable int userId,
+                                              @PathVariable int categoryId) {
 
         PostDto createPost = this.postService.createPost(postDto, userId, categoryId);
         return new ResponseEntity<>(createPost, HttpStatus.CREATED);
@@ -33,7 +35,8 @@ public class PostController {
     }
 
     @PutMapping("/post/{postId}")
-    public ResponseEntity<PostDto> updatePost(@RequestBody PostDto postDto, @PathVariable int postId) {
+    public ResponseEntity<PostDto> updatePost(@RequestBody PostDto postDto,
+                                              @PathVariable int postId) {
 
         PostDto post = this.postService.updatePost(postDto, postId);
         PostDto updatePost = this.postService.updatePost(post, postId);
@@ -66,8 +69,13 @@ public class PostController {
     }
 
     @GetMapping("post/userId/{userId}")
-    public ResponseEntity<List<PostDto>> getPostByUser(@PathVariable int userId) {
-        List<PostDto> postById = this.postService.getPostByUser(userId);
+    public ResponseEntity<PostResponse> getPostByUser(@PathVariable int userId,
+                                                       @RequestParam(value = "pageNumber", defaultValue = Constants.PAGE_NUMBER, required = false) int pageNumber,
+                                                       @RequestParam(value = "pageSize", defaultValue = Constants.PAGE_SIZE, required = false) int pageSize,
+                                                       @RequestParam(value = "sortBy", defaultValue = Constants.SORT_BY, required = false) String sortBy,
+                                                       @RequestParam(value = "sortDir", defaultValue = Constants.SORT_DIR, required = false) String sortDir)
+    {
+        PostResponse postById = this.postService.getPostByUser(userId, pageNumber, pageSize, sortBy, sortDir);
 
         return new ResponseEntity<>(postById, HttpStatus.OK);
     }
@@ -78,11 +86,12 @@ public class PostController {
 
         return new ResponseEntity<>(category, HttpStatus.OK);
     }
+
     @GetMapping("post/search/{keywords}")
-    public ResponseEntity<List<PostDto>> searchPost(@PathVariable String keywords){
+    public ResponseEntity<List<PostDto>> searchPost(@PathVariable String keywords) {
         List<PostDto> searchData = this.postService.searchPost(keywords);
 
-        return  new ResponseEntity<>(searchData, HttpStatus.OK);
+        return new ResponseEntity<>(searchData, HttpStatus.OK);
     }
 
 }

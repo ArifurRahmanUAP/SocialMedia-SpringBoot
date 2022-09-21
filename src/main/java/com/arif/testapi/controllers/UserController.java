@@ -1,5 +1,6 @@
 package com.arif.testapi.controllers;
 
+import com.arif.testapi.Config.Constants;
 import com.arif.testapi.payloads.Response.AllUserResponse;
 import com.arif.testapi.payloads.Response.PostResponse;
 import com.arif.testapi.payloads.Response.UserResponse;
@@ -20,7 +21,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
@@ -105,10 +105,10 @@ public class UserController {
     }
 
     @GetMapping("/getAllUsers")
-    public ResponseEntity<AllUserResponse> getAllUsers(@RequestParam(value = "pageNumber", defaultValue = "0", required = false) int pageNumber,
-                                                          @RequestParam(value = "pageSize", defaultValue = "5", required = false) int pageSize,
+    public ResponseEntity<AllUserResponse> getAllUsers(@RequestParam(value = "pageNumber", defaultValue = Constants.PAGE_NUMBER, required = false) int pageNumber,
+                                                          @RequestParam(value = "pageSize", defaultValue = Constants.PAGE_SIZE, required = false) int pageSize,
                                                           @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy,
-                                                          @RequestParam(value = "sortDir", defaultValue = "asc", required = false) String sortDir) {
+                                                          @RequestParam(value = "sortDir", defaultValue = Constants.SORT_DIR, required = false) String sortDir) {
 
         AllUserResponse allUsers = this.userService.getAllUsers(pageNumber, pageSize, sortBy, sortDir);
 

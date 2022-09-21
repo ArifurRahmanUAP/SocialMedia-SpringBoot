@@ -21,7 +21,7 @@ public interface PostService {
 
     List<PostDto> getPostByCategory(int categoryId);
 
-    List<PostDto> getPostByUser(int userId);
+    PostResponse getPostByUser(int userId, int pageNumber, int pageSize, String sortBy, String sortDir);
 
     List<PostDto> searchPost(String keyword);
 

@@ -24,7 +24,7 @@ public class PostResponse {
 
     private int totalPages;
 
-    private List<PostDto> content;
+    private List<PostDto> Posts;
 
 
 }

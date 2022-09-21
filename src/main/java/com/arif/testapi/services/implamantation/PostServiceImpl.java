@@ -75,15 +75,15 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostResponse getAllPost(int pageNumber, int pageSize, String sortBy, String sortDir) {
 
-        Sort sort = (sortDir.equalsIgnoreCase("asc")) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Sort sort = sortDir.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
 
-        Pageable p = PageRequest.of(pageNumber, pageSize, sort);
-        Page<Post> page = this.userPostRepo.findAll(p);
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+        Page<Post> page = this.userPostRepo.findAll(pageable);
 
         List<PostDto> postDto = page.stream().map((post -> this.modelMapper.map(post, PostDto.class))).collect(Collectors.toList());
 
         PostResponse postResponse = new PostResponse();
-        postResponse.setContent(postDto);
+        postResponse.setPosts(postDto);
         postResponse.setPageNumber(page.getNumber());
         postResponse.setPageSize(page.getSize());
         postResponse.setTotalElements(page.getTotalElements());
@@ -100,11 +100,25 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostDto> getPostByUser(int userId) {
+    public PostResponse getPostByUser(int userId, int pageNumber, int pageSize, String sortBy, String sortDir) {
+
+        Sort sort = sortDir.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+        Page<Post> page = this.userPostRepo.findAll(pageable);
 
         User user = this.userRepo.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "user Id", userId));
 
-        return this.userPostRepo.findByUser(user).stream().map((post) -> this.modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
+        List<PostDto> collect = this.userPostRepo.findByUser(user).stream().map((post) -> this.modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
+
+        PostResponse postResponse = new PostResponse();
+        postResponse.setPageNumber(page.getNumber());
+        postResponse.setPageSize(page.getSize());
+        postResponse.setTotalElements(page.getTotalElements());
+        postResponse.setTotalPages(page.getTotalPages());
+        postResponse.setLastPage(page.isLast());
+        postResponse.setPosts(collect);
+
+        return postResponse;
     }
 
     @Override

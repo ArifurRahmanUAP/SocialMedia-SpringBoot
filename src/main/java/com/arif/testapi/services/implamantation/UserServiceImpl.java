@@ -33,7 +33,6 @@ public class UserServiceImpl implements UserService {
     private ModelMapper modelMapper;
 
 
-
     @Override
     public UserDTO createUser(UserDTO userDTO) {
 
@@ -77,12 +76,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public AllUserResponse getAllUsers(int pageNumber, int pageSize, String sortBy, String sortDir) {
 
-        Sort sort = (sortDir.equalsIgnoreCase("asc")? Sort.by(sortBy).ascending(): Sort.by(sortBy).descending());
+        Sort sort = sortDir.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable p = PageRequest.of(pageNumber, pageSize, sort);
-
         Page<User> allUsers = this.userRepo.findAll(p);
 
-        List<UserResponse> postDto = allUsers.stream().map((user -> this.modelMapper.map(user, UserResponse.class))).collect(Collectors.toList());
+        List<UserResponse> userResponses = allUsers.stream().map((user -> this.modelMapper.map(user, UserResponse.class))).collect(Collectors.toList());
 
         AllUserResponse allUserResponses = new AllUserResponse();
 
@@ -92,7 +90,7 @@ public class UserServiceImpl implements UserService {
         allUserResponses.setLastPage(allUsers.isLast());
         allUserResponses.setTotalElements(allUsers.getTotalElements());
 
-        allUserResponses.setUsers(postDto);
+        allUserResponses.setUsers(userResponses);
 
         return allUserResponses;
     }

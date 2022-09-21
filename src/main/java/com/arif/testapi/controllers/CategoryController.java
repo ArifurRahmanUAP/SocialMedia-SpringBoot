@@ -1,5 +1,6 @@
 package com.arif.testapi.controllers;
 
+import com.arif.testapi.Config.Constants;
 import com.arif.testapi.payloads.Response.ApiResponse;
 import com.arif.testapi.payloads.CategoryDto;
 import com.arif.testapi.payloads.Response.CategoryResponse;
@@ -28,7 +29,8 @@ public class CategoryController {
     }
 
     @PutMapping("/{categoryId}")
-    public ResponseEntity<CategoryDto> updateCategory(@Valid @RequestBody CategoryDto categoryDto, @PathVariable int categoryId) {
+    public ResponseEntity<CategoryDto> updateCategory(@Valid @RequestBody CategoryDto categoryDto,
+                                                      @PathVariable int categoryId) {
 
         CategoryDto category = this.categoryService.updateCategory(categoryDto, categoryId);
         return new ResponseEntity<>(category, HttpStatus.OK);
@@ -52,10 +54,10 @@ public class CategoryController {
     }
 
     @GetMapping("/")
-    ResponseEntity<CategoryResponse> getAllCategories(@RequestParam(value = "pageNumber", defaultValue = "0", required = false) int pageNumber,
-                                                      @RequestParam(value = "pageSize", defaultValue = "5", required = false) int pageSize,
+    ResponseEntity<CategoryResponse> getAllCategories(@RequestParam(value = "pageNumber", defaultValue = Constants.PAGE_NUMBER, required = false) int pageNumber,
+                                                      @RequestParam(value = "pageSize", defaultValue = Constants.PAGE_SIZE, required = false) int pageSize,
                                                       @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy,
-                                                      @RequestParam(value = "sortDir", defaultValue = "Asc", required = false) String sortDir) {
+                                                      @RequestParam(value = "sortDir", defaultValue = Constants.SORT_DIR, required = false) String sortDir) {
         CategoryResponse categories = this.categoryService.getCategories(pageNumber, pageSize, sortBy, sortDir);
         return ResponseEntity.ok(categories);
     }

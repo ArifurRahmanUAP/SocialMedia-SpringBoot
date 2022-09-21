@@ -15,14 +15,18 @@ public class CommentController {
     private CommentService commentService;
 
     @PostMapping("/{userId}/{postId}")
-    public ResponseEntity<CommentDto> createComment(@RequestBody CommentDto commentDto, @PathVariable int userId, @PathVariable int postId) {
+    public ResponseEntity<CommentDto> createComment(@RequestBody CommentDto commentDto,
+                                                    @PathVariable int userId,
+                                                    @PathVariable int postId) {
         CommentDto comment = this.commentService.createComment(commentDto, userId, postId);
 
         return new ResponseEntity<>(comment, HttpStatus.CREATED);
     }
 
     @PutMapping("/{userId}/{commentId}")
-    public ResponseEntity<CommentDto> updateComment(@RequestBody CommentDto commentDto, @PathVariable int userId, @PathVariable int commentId) {
+    public ResponseEntity<CommentDto> updateComment(@RequestBody CommentDto commentDto,
+                                                    @PathVariable int userId,
+                                                    @PathVariable int commentId) {
         CommentDto comment = this.commentService.updateComment(commentDto, userId, commentId);
 
         return new ResponseEntity<>(comment, HttpStatus.OK);
