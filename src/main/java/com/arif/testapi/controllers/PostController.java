@@ -67,10 +67,11 @@ public class PostController {
         StreamUtils.copy(inputStream, response.getOutputStream());
     }
 
-    @PutMapping(value = "/post/{postId}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PutMapping(value = "/post/{postId}/{userId}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<PostDto> updatePost(@RequestPart("body") PostDto postDto,
                                               @RequestPart("image") MultipartFile images,
-                                              @PathVariable int postId) {
+                                              @PathVariable int postId,
+                                              @PathVariable int userId) {
 
         String fileName = null;
         try {
@@ -80,8 +81,8 @@ public class PostController {
         }
         postDto.setPostImage("http://localhost:3309/api/images/" + fileName);
 
-        PostDto post = this.postService.updatePost(postDto, postId);
-        PostDto updatePost = this.postService.updatePost(post, postId);
+        PostDto updatePost = this.postService.updatePost(postDto, postId, userId);
+
         return new ResponseEntity<>(updatePost, HttpStatus.ACCEPTED);
     }
 

@@ -37,6 +37,7 @@ public class CommentServiceImpl implements CommentService {
         comment.setDate(new Date());
         comment.setUser(user);
         comment.setPost(post);
+
         Comment createdComment = this.commentRepo.save(comment);
 
         return this.modelMapper.map(createdComment, CommentDto.class);

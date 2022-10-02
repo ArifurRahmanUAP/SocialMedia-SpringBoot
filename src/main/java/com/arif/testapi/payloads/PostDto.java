@@ -37,4 +37,6 @@ public class PostDto {
 
     private List<CommentDto> comments = new ArrayList<>();
 
+    private List<LikesDto> likes = new ArrayList<>();
+
 }
