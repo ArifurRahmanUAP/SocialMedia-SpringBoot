@@ -25,7 +25,7 @@ public class PostDto {
     @NotEmpty
     private String postContent;
 
-    private String imageName;
+    private String postImage;
 
     private Date postDate;
 

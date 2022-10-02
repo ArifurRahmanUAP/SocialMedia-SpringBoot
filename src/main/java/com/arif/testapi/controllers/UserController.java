@@ -22,6 +22,8 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.io.InputStream;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -36,8 +38,10 @@ public class UserController {
     private String path;
 
 
-    @PostMapping("/")
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO,  @RequestParam(value = "image", required = false) MultipartFile images ) {
+    @PostMapping(value = "/create", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE})
+    @ResponseBody
+    public ResponseEntity<UserDTO> createUser(@RequestPart("body") UserDTO userDTO,
+                                              @RequestPart(value = "image", required = false) MultipartFile images ) {
 
 //        String fileName = StringUtils.cleanPath(Objects.requireNonNull(image.getOriginalFilename()));
 
@@ -80,8 +84,20 @@ public class UserController {
         StreamUtils.copy(inputStream, response.getOutputStream());
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> updateUser(@RequestBody @Valid UserDTO userDTO, @PathVariable int id) {
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @ResponseBody
+    public ResponseEntity<UserDTO> updateUser(@RequestPart(value = "body") @Valid UserDTO userDTO, @PathVariable int id, @RequestPart(value = "image") MultipartFile images) {
+
+
+        String fileName = null;
+        try {
+            fileName = this.fileService.uploadImage(path, images);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        userDTO.setUserImage("http://localhost:3309/api/users/images/" + fileName);
 
         UserDTO updateDto = this.userService.updateUser(userDTO, id);
         return ResponseEntity.ok(updateDto);
