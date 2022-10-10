@@ -1,15 +1,14 @@
 package com.arif.testapi.payloads;
 
 import com.arif.testapi.payloads.Response.PostResponse;
-import com.arif.testapi.payloads.Response.UserResponseForComment;
-import lombok.AllArgsConstructor;
+import com.arif.testapi.payloads.Response.UserResponse;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotEmpty;
+
 import java.util.Date;
 
 @NoArgsConstructor
@@ -25,9 +24,11 @@ public class LikesDto {
 
     @ManyToOne
     @JoinColumn(name = "post_id")
-    private UserResponseForComment user;
+    private UserResponse user;
 
-    @JoinColumn(name = "like_id")
-    private PostResponse posts;
+    @ManyToOne
+    @JoinColumn(name = "post_id")
+    private PostDto postDto;
+
 
 }

@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.Objects.isNull;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -36,11 +38,19 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO createUser(UserDTO userDTO) {
 
-        User user = this.modelMapper.map(userDTO, User.class);
+        User byEmail = this.userRepo.findByEmail(userDTO.getEmail());
 
-        User savedUser = this.userRepo.save(user);
 
-        return this.modelMapper.map(savedUser, UserDTO.class);
+
+        if (isNull(byEmail)) {
+            User user = this.modelMapper.map(userDTO, User.class);
+
+            User savedUser = this.userRepo.save(user);
+
+            return this.modelMapper.map(savedUser, UserDTO.class);
+
+        } else return null;
+
     }
 
     @Override

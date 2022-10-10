@@ -22,6 +22,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.io.InputStream;
 
+import static java.util.Objects.isNull;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 @RestController
@@ -38,10 +39,10 @@ public class UserController {
     private String path;
 
 
-    @PostMapping(value = "/create", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(value = "/create", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @ResponseBody
-    public ResponseEntity<UserDTO> createUser(@RequestPart("body") UserDTO userDTO,
-                                              @RequestPart(value = "image", required = false) MultipartFile images ) {
+    public ResponseEntity createUser(@RequestPart("body") UserDTO userDTO,
+                                              @RequestPart(value = "image", required = false) MultipartFile images) {
 
 //        String fileName = StringUtils.cleanPath(Objects.requireNonNull(image.getOriginalFilename()));
 
@@ -72,8 +73,11 @@ public class UserController {
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
+        if (isNull(createUserDto)) {
+            return new ResponseEntity<>(new ApiResponse("Already Exist", false), HttpStatus.CONFLICT);
 
-        return new ResponseEntity<>(createUserDto, HttpStatus.CREATED);
+        } else
+            return new ResponseEntity<>(createUserDto, HttpStatus.CREATED);
     }
 
     @GetMapping(value = "images/{imageName}", produces = MediaType.IMAGE_JPEG_VALUE)
@@ -122,9 +126,9 @@ public class UserController {
 
     @GetMapping("/getAllUsers")
     public ResponseEntity<AllUserResponse> getAllUsers(@RequestParam(value = "pageNumber", defaultValue = Constants.PAGE_NUMBER, required = false) int pageNumber,
-                                                          @RequestParam(value = "pageSize", defaultValue = Constants.PAGE_SIZE, required = false) int pageSize,
-                                                          @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy,
-                                                          @RequestParam(value = "sortDir", defaultValue = Constants.SORT_DIR, required = false) String sortDir) {
+                                                       @RequestParam(value = "pageSize", defaultValue = Constants.PAGE_SIZE, required = false) int pageSize,
+                                                       @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy,
+                                                       @RequestParam(value = "sortDir", defaultValue = Constants.SORT_DIR, required = false) String sortDir) {
 
         AllUserResponse allUsers = this.userService.getAllUsers(pageNumber, pageSize, sortBy, sortDir);
 
